@@ -87,6 +87,11 @@ class authController extends CI_Controller {
 		redirect('authController/login');
 	}
 
+	public function forget_password()
+	{
+		$this->load->view('auth/forgetPassword');
+	}
+
 	
 
 }
