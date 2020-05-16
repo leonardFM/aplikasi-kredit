@@ -54,6 +54,7 @@
           </div>
    
       <a href="<?php echo base_url('authController/register'); ?>" class="text-center btn btn-primary btn-block mt-2">Belum punya akun? Daftar Sekarang</a>
+      <a href="" class="text-center btn btn-danger btn-block mt-2">Lupa Password</a>
         </div>
       </form>
 
