@@ -37,13 +37,46 @@ class authController extends CI_Controller {
 				'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
 				'no_telepon' => $this->input->post('telepon'),
 				'alamat' => $this->input->post('alamat'),
+				'status' => 0,
 				'role_id' => 2,
 			];
 
-			$this->db->insert('user', $data);
+			// $this->db->insert('user', $data);
+			$this->_sendEmail();
+
 			redirect('authController/login');
 		}
 	}
+
+	private function _sendEmail()
+	{
+		$config = [
+			'protocol' => 'smtp',
+			'smtp_host' => 'ssl://smtp.googlemail.com',
+			'smtp_user' => 'leonardfredsmorin3@gmail.com',
+			'smtp_pass' => 'korem173pvb',
+			'smtp_port' => 465,
+			'mailtype' => 'html',
+			'charset' => 'utf-8',
+			'newline' => "\r\n"
+		];
+
+		$this->load->library('email', $config);
+
+		$this->email->from('leonardfredsmorin3@gmail.com','Leonard Morin');
+		$this->email->to('leobaru39@gmail.com');
+		$this->email->subject('test email');
+		$this->email->message('hello');
+
+		if ($this->email->send()) {
+			return true;
+		} else {
+			$this->email->print_debugger();
+			die;
+		}
+
+	}
+
 
 
 
