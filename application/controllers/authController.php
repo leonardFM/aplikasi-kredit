@@ -21,7 +21,7 @@ class authController extends CI_Controller {
 	public function register()
 	{
 		$this->form_validation->set_rules('nama', 'Nama', 'required');
-		$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+		$this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');
 		$this->form_validation->set_rules('password', 'Password', 'required|min_length[6]|matches[conf_password]');
 		$this->form_validation->set_rules('conf_password', 'Password', 'required|matches[password]');
 		$this->form_validation->set_rules('telepon', 'Telepon', 'required');
@@ -32,28 +32,29 @@ class authController extends CI_Controller {
 			$this->load->view('auth/register');
 		} else {
 			$data = [
-				'nama' => $this->input->post('nama'),
-				'email' => $this->input->post('email'),
+				'nama' => htmlspecialchars($this->input->post('nama')),
+				'email' => htmlspecialchars($this->input->post('email')),
 				'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
-				'no_telepon' => $this->input->post('telepon'),
-				'alamat' => $this->input->post('alamat'),
+				'no_telepon' => htmlspecialchars($this->input->post('telepon')),
+				'alamat' => htmlspecialchars($this->input->post('alamat')),
 				'status' => 0,
 				'role_id' => 2,
 			];
 
-			// $this->db->insert('user', $data);
+			$this->db->insert('user', $data);
 			$this->_sendEmail();
-
 			redirect('authController/login');
+
 		}
 	}
 
 	private function _sendEmail()
 	{
+		$email = $this->input->post('email');
 		$config = [
 			'protocol' => 'smtp',
 			'smtp_host' => 'ssl://smtp.googlemail.com',
-			'smtp_user' => 'leonardfredsmorin3@gmail.com',
+			'smtp_user' => 'leonardfredsmorin@gmail.com',
 			'smtp_pass' => 'korem173pvb',
 			'smtp_port' => 465,
 			'mailtype' => 'html',
@@ -63,21 +64,37 @@ class authController extends CI_Controller {
 
 		$this->load->library('email', $config);
 
-		$this->email->from('leonardfredsmorin3@gmail.com','Leonard Morin');
-		$this->email->to('leobaru39@gmail.com');
+		$this->email->from('leonardfredsmorin@gmail.com','Leonard Morin');
+		$this->email->to($email);
 		$this->email->subject('test email');
-		$this->email->message('hello');
+		$this->email->message('
+			<a href="'. base_url() . 'authController/verify?email=' . $email . '">
+				Aktivasi akun
+			</a>');
 
 		if ($this->email->send()) {
 			return true;
 		} else {
-			$this->email->print_debugger();
+			echo $this->email->print_debugger();
 			die;
 		}
 
 	}
 
+	public function verify()
+	{
+		$email = $this->input->get('email');
+		$user = $this->db->get_where('user', ['email' => $email])->row_array();
 
+		if ($user) {
+			$this->db->set('status', 1);
+			$this->db->where('email', $email);
+			$this->db->update('user');
+			redirect('authController/login');
+		} else {
+			echo "email salah";
+		}
+	}
 
 
 	public function login()
@@ -95,7 +112,8 @@ class authController extends CI_Controller {
 
 			$user = $this->db->get_where('user', ['email' => $email])->row_array();
 
-			if (password_verify($password, $user['password'])) {
+			if ($user['status'] == true ) {
+				if (password_verify($password, $user['password'])) {
 				$session = [
 					'email' => $user['email'],
 					'role_id' => $user['role_id']
@@ -103,12 +121,17 @@ class authController extends CI_Controller {
 
 				$this->session->set_userdata($session);
 
-				if ($user['role_id'] == 1) {
-					redirect('adminController');
-				} else {
-					redirect('userController');
-				} 
+					if ($user['role_id'] == 1) {
+						redirect('adminController');
+					} else {
+						redirect('userController');
+					} 
+				}
+			} else {
+				echo "email belum diaktifasi";
 			}
+
+			
 		}
 		
 	}
