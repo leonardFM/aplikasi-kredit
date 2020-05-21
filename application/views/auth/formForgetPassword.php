@@ -21,38 +21,45 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <h2>Lupa Password anda ?</h2>
+    <h2>Form Ganti Password</h2>
   </div>
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
       
-
-      <form action="" method="post">
+      <h2 style="font-size: 20px;" class="text-center"><?php echo $this->session->userdata('reset_email'); ?></h2>
+      <form action="<?php echo base_url('authController/formResetPassword'); ?>" method="post">
         <div class="input-group">
-          <input type="email" name="email" class="form-control" placeholder="Email">
+          <input type="password" name="password" class="form-control" placeholder="Password Baru">
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
+              <span class="fas fa-lock"></span>
             </div>
           </div>
         </div>
-        <?= form_error('email','<small class="text-danger">','</small>'); ?>
+        <?= form_error('password','<small class="text-danger">','</small>'); ?>
+
+        <div class="input-group">
+          <div class="input-group mt-3">
+            <input type="password" name="conf_password" class="form-control" placeholder="Ulangi Password Baru">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <?= form_error('conf_password','<small class="text-danger">','</small>'); ?>
+
         <div class="row">
           <div class="col-12">
-            <button type="submit" class="btn btn-danger mt-3 btn-sm btn-block">Request new password</button>
+            <button type="submit" class="btn btn-danger mt-3 btn-sm btn-block">Reset password baru</button>
             <hr>
           </div>
           <!-- /.col -->
         </div>
       </form>
 
-      <p class="mt-3  mb-1">
-        <a class="btn btn-sm btn-block btn-success" href="<?php echo base_url('authController/login'); ?>">Back to Login</a>
-      </p>
-      <p class="mb-0">
-        <a class="btn btn-sm btn-block btn-primary" href="<?php echo base_url('authController/register'); ?>" >Daftar</a>
-      </p>
     </div>
     <!-- /.login-card-body -->
   </div>

@@ -42,13 +42,13 @@ class authController extends CI_Controller {
 			];
 
 			$this->db->insert('user', $data);
-			$this->_sendEmail();
+			$this->_sendEmail('verify');
 			redirect('authController/login');
 
 		}
 	}
 
-	private function _sendEmail()
+	private function _sendEmail($type)
 	{
 		$email = $this->input->post('email');
 		$config = [
@@ -66,11 +66,20 @@ class authController extends CI_Controller {
 
 		$this->email->from('leonardfredsmorin@gmail.com','Leonard Morin');
 		$this->email->to($email);
-		$this->email->subject('test email');
-		$this->email->message('
-			<a href="'. base_url() . 'authController/verify?email=' . $email . '">
-				Aktivasi akun
-			</a>');
+
+		if ($type == 'verify') {
+			$this->email->subject('Aktivasi Akun');
+			$this->email->message('
+				<a href="'. base_url() . 'authController/verify?email=' . $email . '">
+					Aktivasi akun
+				</a>');
+		} else if ($type == 'forget_password') {
+			$this->email->subject('Reset Password');
+			$this->email->message('
+				<a href="'. base_url() . 'authController/resetPassword?email=' . $email . '">
+					Reset Password
+				</a>');
+		}
 
 		if ($this->email->send()) {
 			return true;
@@ -145,7 +154,59 @@ class authController extends CI_Controller {
 
 	public function forget_password()
 	{
-		$this->load->view('auth/forgetPassword');
+		$this->form_validation->set_rules('email','Email','required|trim|valid_email');
+
+		if ($this->form_validation->run() == false) {
+			$this->load->view('auth/forgetPassword');
+		} else {
+			$email = $this->input->post('email');
+			$user = $this->db->get_where('user', ['email' => $email, 'status' => 1])->row_array();
+
+			if ($user) {
+				$this->_sendEmail('forget_password');
+				echo "email berhasil dikirim";
+			} else {
+				echo "email tidak terdaftar atau email belum diaktifasi";
+			}
+		}
+	}
+
+	public function resetPassword()
+	{
+		$email = $this->input->get('email');
+		$user = $this->db->get_where('user', ['email' => $email])->row_array();
+
+		if ($user) {
+			$this->session->set_userdata('reset_email', $email);
+			$this->formResetPassword();
+		} else {
+			echo "email tidak sesuai";
+		}
+	}
+
+	public function formResetPassword()
+	{
+		if (!$this->session->userdata('reset_email')) {
+			redirect('authController/login');
+		}
+
+		$this->form_validation->set_rules('password','Password baru','required|min_length[6]|matches[conf_password]');
+		$this->form_validation->set_rules('conf_password','Confrim password','required|min_length[6]|matches[password]');
+		$validation = $this->form_validation->run();
+
+		if ($validation == false) {
+			$this->load->view('auth/formForgetPassword');
+		} else {
+			$password = password_hash($this->input->post('password'), PASSWORD_DEFAULT);
+			$email = $this->session->userdata('reset_email');
+			
+			$this->db->set('password', $password);
+			$this->db->where('email', $email);
+			$this->db->update('user');	
+
+			$this->session->unset_userdata('reset_email');
+			redirect('authController/login');
+		}
 	}
 
 	
