@@ -36,6 +36,13 @@
           </li>
 
           <li class="nav-item">
+            <a href="<?php echo base_url('userController/gantiPassword'); ?>" class="nav-link">
+              <i class="nav-icon fas fa-key"></i>
+              <p>Ganti Password</p>
+            </a>
+          </li>
+
+          <li class="nav-item">
             <a href="<?php echo base_url('pinjamanController'); ?>" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>Jenis Pinjaman</p>
