@@ -26,6 +26,11 @@
 			    		<td>No Telepon</td>
 			    		<td><?php echo $user['no_telepon']; ?></td>    			
 		    		</tr>
+
+		    		<tr>
+			    		<td>No Rekening</td>
+			    		<td><?php echo $user['no_rekening']; ?></td>    			
+		    		</tr>
 		    		
 		    	</table>
 		    	<a href="<?php echo base_url('userController/editProfil'); ?>" class="btn btn-success btn-sm">Edit Profil</a>

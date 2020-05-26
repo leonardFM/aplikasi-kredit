@@ -15,7 +15,10 @@ class pinjaman_model extends CI_Model {
 
 	public function getPinjamanById($id)
 	{
-		return $this->db->get_where('pinjaman', ['id' => $id])->row_array();
+		$this->db->select('a.*, b.bank as nama_bank');
+		$this->db->from('pinjaman as a');
+		$this->db->join('bank as b', 'a.bank_id = b.id');
+		return $this->db->get_where('pinjaman', ['a.id' => $id])->row_array();
 	}
 
 	public function addTipePinjaman()
