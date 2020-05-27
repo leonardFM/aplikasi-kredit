@@ -37,11 +37,6 @@
                       </td>
                       <td class="table-utama">
                         <a href="<?php echo base_url(); ?>pengajuanController/detail/<?php echo $row['id']; ?>" class="btn btn-primary btn-sm mr-2">Lihat</a>
-                        <?php if ($row['status'] == 0) : ?>
-                        	<a href="<?php echo base_url(); ?>pengajuanController/setuju/<?php echo $row['id']; ?>" class="btn btn-success btn-sm mr-2">Setuju</a>
-                        <?php else : ?>	
-                        	<a href="<?php echo base_url(); ?>pengajuanController/batal/<?php echo $row['id']; ?>" class="btn btn-danger btn-sm mr-2">Batal</a>
-                        <?php endif; ?>
                       </td>
                   </tr>
                 <?php endforeach; ?>  

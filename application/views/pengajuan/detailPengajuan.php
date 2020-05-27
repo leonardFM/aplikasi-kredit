@@ -68,17 +68,25 @@
 			    			<?php endif; ?>
 			    		</td>    			
 		    		</tr>
-		    		
+
+
 		    	</table>
+		    		
 		    	</div>
 
 		    	<div class="col-lg">
 		    		<div class="card">
 					  <div class="card-body">
 					    <h5 class="text-center"><b>Alasan Pengajuan</b></h5>
-					    <p class="card-text"><?php echo $pengajuan['keterangan']; ?></p>
+					    <hr>
+					    <p class="card-text text-center" style="font-size: 20px;"><?php echo $pengajuan['keterangan']; ?></p>
 					  </div>
 					</div>
+					<?php if ($pengajuan['status'] == 0) : ?>
+                        	<a href="<?php echo base_url(); ?>pengajuanController/setuju/<?php echo $pengajuan['id']; ?>" class="btn btn-success btn-sm mr-2"><i class="far fa-check-square mr-2"></i>Setuju & kirim email</a>
+                        <?php else : ?>	
+                        	<a href="<?php echo base_url(); ?>pengajuanController/batal/<?php echo $pengajuan['id']; ?>" class="btn btn-danger btn-sm mr-2"><i class="fas fa-times-circle mr-2"></i>Batalkan Persetujuan</a>
+                        <?php endif; ?>
 		    	</div>
 		    	
 		  	</div>

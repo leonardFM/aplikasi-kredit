@@ -81,6 +81,19 @@ class tipePinjamanController extends CI_Controller {
 		}
 	}
 
+	public function detail($id)
+	{
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$this->load->model('bank_model');
+		$data['pinjaman'] = $this->pinjaman_model->getPinjamanById($id);
+
+		$this->load->view('layout/header');
+		$this->load->view('layout/sidebar');
+		$this->load->view('layout/topbar');
+		$this->load->view('tipe_pinjaman/detailTipePeminjaman', $data);
+		$this->load->view('layout/footer');
+	}
+
 	public function delete($id)
 	{
 		$this->pinjaman_model->deleteTipePinjaman($id);
