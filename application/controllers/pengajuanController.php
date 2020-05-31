@@ -72,7 +72,7 @@ class pengajuanController extends CI_Controller {
 
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['pinjaman'] = $this->pinjaman_model->getPinjamanById($id);
-
+		
 		if ($validation == false) {
 			$this->load->view('layoutUser/header');
 			$this->load->view('layoutUser/topbar');

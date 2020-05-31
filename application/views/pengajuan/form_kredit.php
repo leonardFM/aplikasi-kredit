@@ -9,6 +9,7 @@
           <form action="" method="post">
             <div class="form-group">
               <label for="exampleInputEmail1">Nama </label>
+              <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
               <input type="text" name="nama" class="form-control form-control-sm" value="<?php echo $user['nama']; ?>" readonly>
             <?= form_error('nama','<small class="text-danger">','</small>'); ?>
             </div>

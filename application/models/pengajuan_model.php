@@ -30,11 +30,20 @@ class pengajuan_model extends CI_Model {
 			'bank_id' => $this->input->post('bank'),
 			'nominal' => $this->input->post('nominal'),
 			'waktu' => $this->input->post('waktu'),
+			'tgl_ajuan' => time(),
 			'keterangan' => $this->input->post('keterangan'),
 			'status' => 0
 		];
 
 		$this->db->insert('pengajuan',$data);
+	}
+
+	public function statusPengajuanById()
+	{
+		$this->db->select('a.*, b.bank as nama_bank,');
+		$this->db->from('pengajuan as a');
+		$this->db->join('bank as b', 'a.bank_id = b.id');
+		return $this->db->get()->result_array();
 	}
 
 	public function setujuPengajuan($id)

@@ -188,17 +188,16 @@ class userController extends CI_Controller {
 		$this->load->view('layoutUser/footer');
 	}
 
-	public function status($id)
+	public function statusPengajuan()
 	{
-		$this->load->model('ajuan_kredit_model');
+		$this->load->model('pengajuan_model');
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-
-		$data['status'] = $this->ajuan_kredit_model->count($id);
+		$data['statusPengajuan'] = $this->pengajuan_model->statusPengajuanById();
 
 		$this->load->view('layoutUser/header');
 		$this->load->view('layoutUser/sidebar');
 		$this->load->view('layoutUser/topbar');
-		$this->load->view('user/status',$data);
+		$this->load->view('user/statusPengajuan',$data);
 		$this->load->view('layoutUser/footer');
 	}
 }

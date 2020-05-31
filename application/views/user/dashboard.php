@@ -10,7 +10,7 @@
           <div class="card-body">
             <h5 class="card-title">Lihat Status Pengajuan</h5>
             <p class="card-text">status pengajuan pinjaman kredit</p>
-            <a href="#" class="btn btn-primary btn-block btn-sm">Lihat</a>
+            <a href="<?php echo base_url('userController/statusPengajuan'); ?>" class="btn btn-primary btn-block btn-sm">Lihat</a>
           </div>
         </div>
       </div>
