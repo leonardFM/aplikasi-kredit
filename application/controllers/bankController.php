@@ -42,6 +42,7 @@ class bankController extends CI_Controller {
 	{
 
 		$this->form_validation->set_rules('nama', 'Nama', 'required');
+		$this->form_validation->set_rules('keterangan', 'Keterangan', 'required');
 		$validation = $this->form_validation->run();
 
 		if ($validation == false) {
@@ -51,6 +52,11 @@ class bankController extends CI_Controller {
 			$this->load->view('bank/add');
 			$this->load->view('layout/footer');
 		} else {
+			$data = [
+				'bank' => $this->input->post('nama'),
+				'keterangan' => $this->input->post('keterangan')
+			];
+
 			$this->bank_model->addBank($data);
 			redirect('bankController');
 		}
@@ -69,8 +75,11 @@ class bankController extends CI_Controller {
 			$this->load->view('bank/edit', $data);
 			$this->load->view('layout/footer');
 		} else {
-			
-			$this->bank_model->editBank($id);
+			$data = [
+				'bank' => $this->input->post('nama'),
+				'keterangan' => $this->input->post('keterangan')
+			];			
+			$this->bank_model->editBank($id, $data);
 			redirect('bankController');
 		}
 	}

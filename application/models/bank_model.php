@@ -3,9 +3,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class bank_model extends CI_Model {
 
-	public function getBank()
+	public function getBank($id = null)
 	{
-		return $this->db->get('bank')->result_array();
+		if ($id == null) {
+			return $this->db->get('bank')->result_array();
+		} else {
+			return $this->db->get_where('bank', ['id' => $id])->result_array();
+		}
 	}
 
 	public function getBankById($id)
@@ -15,23 +19,13 @@ class bank_model extends CI_Model {
 
 	public function addBank($data)
 	{
-		$data = [
-			'bank' => $this->input->post('nama'),
-			'keterangan' => $this->input->post('keterangan')
-		];
-
-		$this->db->insert('bank',$data);
+		return $this->db->insert('bank', $data);
 	}
 
-	public function editBank($id)
+	public function editBank($id, $data)
 	{
-		$data = [
-			'bank' => $this->input->post('nama'),
-			'keterangan' => $this->input->post('keterangan')
-		];
-
 		$this->db->where('id',$id);
-		$this->db->update('bank', $data);
+		return $this->db->update('bank', $data);
 	}
 
 	public function deleteBank($id)

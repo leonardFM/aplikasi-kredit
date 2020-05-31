@@ -32,6 +32,32 @@ class nasabahController extends RestController {
 		}
 	}
 
+	public function nasabah_delete()
+	{
+		$id = $this->delete('id');
+		$delete = $this->nasabah_model->deleteNasabah($id);
+
+		if ($id == null) {
+			$this->response([
+				'status' => false,
+				'message' => '404 not found'
+			], 404);
+		} else {
+			if ($delete == null) {
+				$this->response([
+					'status' => true,
+					'id' => $id,
+					'message' => 'deleted'
+				], 200);
+			} else {
+				$this->response([
+					'status' => false,
+					'message' => 'id not found'
+				], 404);
+			}
+		}
+	}
+
 }
 
     

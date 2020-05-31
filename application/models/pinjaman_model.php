@@ -3,14 +3,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class pinjaman_model extends CI_Model {
 
-	public function getPinjaman()
+	public function getPinjaman($id = null)
 	{
-		$this->db->select('a.*, b.bank as nama_bank');
-		$this->db->from('pinjaman as a');
-		$this->db->join('bank as b', 'a.bank_id = b.id');
-		$this->db->order_by('bank_id','asc');
-		$this->db->order_by('nominal','asc');
-		return $this->db->get()->result_array();
+		if ($id == null) {
+			$this->db->select('a.*, b.bank as nama_bank');
+			$this->db->from('pinjaman as a');
+			$this->db->join('bank as b', 'a.bank_id = b.id');
+			$this->db->order_by('bank_id','asc');
+			$this->db->order_by('nominal','asc');
+			return $this->db->get()->result_array();
+		} else {
+			return $this->db->get_where('pinjaman', ['id' => $id])->result_array();
+		}
 	}
 
 	public function getPinjamanById($id)

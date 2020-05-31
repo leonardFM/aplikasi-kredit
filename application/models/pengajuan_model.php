@@ -3,12 +3,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class pengajuan_model extends CI_Model {
 
-	public function getPengajuan()
+	public function getPengajuan($id = null)
 	{
-		$this->db->select('a.*, b.bank as nama_bank');
-		$this->db->from('pengajuan as a');
-		$this->db->join('bank as b', 'a.bank_id = b.id');
-		return $this->db->get()->result_array();
+		if ($id == null) {
+			$this->db->select('a.*, b.bank as nama_bank');
+			$this->db->from('pengajuan as a');
+			$this->db->join('bank as b', 'a.bank_id = b.id');
+			return $this->db->get()->result_array();
+		} else {
+			return $this->db->get_where('bank', ['id' => $id])->result_array();
+		}
 	}
 
 	public function getPengajuanById($id)
